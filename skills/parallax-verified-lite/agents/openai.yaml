@@ -1,0 +1,6 @@
+interface:
+  display_name: "Parallax Verified Lite"
+  short_description: "Bounded dual-model research with primary-source checks"
+  default_prompt: "Use $parallax-verified-lite to compare two independent analyses and verify the claims that could change the conclusion."
+policy:
+  allow_implicit_invocation: false

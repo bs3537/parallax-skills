@@ -1,0 +1,6 @@
+interface:
+  display_name: "Parallax Lite"
+  short_description: "Fast dual-model research with bounded verification"
+  default_prompt: "Use $parallax-lite to compare two independent answers and produce a fast, bounded merged verdict."
+policy:
+  allow_implicit_invocation: false
