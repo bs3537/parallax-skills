@@ -35,7 +35,7 @@ EXIT_MERGE_FAILED = 4
 EXIT_BAD_ARGS = 5
 
 DEFAULT_RUN_BASE = Path.home() / "Parallax_Lite_Projects"
-DEFAULT_CLAUDE_MODEL = os.environ.get("PARALLAX_LITE_CLAUDE_MODEL", "claude-opus-4-8")
+DEFAULT_CLAUDE_MODEL = os.environ.get("PARALLAX_LITE_CLAUDE_MODEL", "claude-opus-5")
 DEFAULT_CODEX_MODEL = os.environ.get("PARALLAX_LITE_CODEX_MODEL", "gpt-5.6-sol")
 DEFAULT_MERGE_MODEL = os.environ.get("PARALLAX_LITE_MERGE_MODEL", "gpt-5.6-sol")
 DEFAULT_CLAUDE_EFFORT = os.environ.get("PARALLAX_LITE_CLAUDE_EFFORT", "high")

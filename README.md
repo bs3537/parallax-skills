@@ -227,7 +227,7 @@ Invoke explicitly with `$parallax` or “use Parallax.” Full is the exhaustive
 
 Full runs two independent senior-research lanes with broad tool access:
 
-- Claude Opus 4.8 at high effort.
+- Claude Opus 5 at high effort.
 - GPT-5.6 Sol at high effort.
 - GPT-5.6 Sol merger at high effort with live tools.
 - Optional FinTwit/X sentiment sidecar only when `--fintwit` is requested.

@@ -55,7 +55,7 @@ comparative references do not count.
               ┌───────────────────────┼───────────────────────┐
               ▼                                                ▼
    ┌────────────────────────┐                     ┌────────────────────────┐
-   │  Lane: Claude Opus 4.8 │                      │  Lane: GPT-5.6 Sol      │
+   │  Lane: Claude Opus 5 │                      │  Lane: GPT-5.6 Sol      │
    │  (high) — full tool    │                      │  via Codex (high) —     │
    │  suite, independent    │                      │  full tool suite,       │
    │  research pass         │                      │  independent research   │
@@ -73,7 +73,7 @@ comparative references do not count.
                      └──────────────────┬─────────────────────┘
                                          ▼
               PUBLISH: numbered answers at the stock-folder root
-        1_opus48_report.{md,html}  2_gpt56sol_report.{md,html}
+        1_opus5_report.{md,html}  2_gpt56sol_report.{md,html}
                     3_merged_verdict.{md,html}
                                  │
                                  ▼
@@ -170,7 +170,7 @@ never present a merged verdict as verified unless all three checks above passed.
 
 | Variable | Default | Meaning |
 | --- | --- | --- |
-| `PARALLAX_CLAUDE_MODEL` | `claude-opus-4-8` | Claude lane model |
+| `PARALLAX_CLAUDE_MODEL` | `claude-opus-5` | Claude lane model |
 | `PARALLAX_CLAUDE_EFFORT` | `high` | Claude lane effort |
 | `PARALLAX_CODEX_MODEL` | `gpt-5.6-sol` | Codex lane model |
 | `PARALLAX_CODEX_EFFORT` | `high` | Codex lane effort |
@@ -250,7 +250,7 @@ publish folder; Round 4 (2026-07-11) added the Final Answer layer on top of it:
   when the subject looks like one, else a lowercase-hyphenated topic slug. This folder **persists**
   across runs — it is not recreated per invocation.
 - **Published audit trail** lives at the stock folder's ROOT, numbered in pipeline order with
-  model-descriptive names, each with a rendered `.html` sibling: `1_opus48_report.{md,html}`,
+  model-descriptive names, each with a rendered `.html` sibling: `1_opus5_report.{md,html}`,
   `2_gpt56sol_report.{md,html}`, `3_merged_verdict.{md,html}` — the full, unabridged research and
   verification record.
 - **Published reader-facing answer** lives in `<SLUG>/final/`, which holds **ONLY** numbered HTML
@@ -258,11 +258,11 @@ publish folder; Round 4 (2026-07-11) added the Final Answer layer on top of it:
   provenance only, kept at `runs/<ts>/final_answer.md`. `final/`'s own numbering is a **completely
   independent sequence** from the root's — see "Two Independent Numbering Sequences" below.
 - **Re-run numbering (root):** a second run on the same stock scans the folder root for existing `^\d+_`
-  file prefixes and continues from `max+1` — e.g. a second `NVDA` run publishes `4_opus48_report.*`,
+  file prefixes and continues from `max+1` — e.g. a second `NVDA` run publishes `4_opus5_report.*`,
   `5_gpt56sol_report.*`, `6_merged_verdict.*`, never overwriting the first run's answers. The base index
   is computed once per run and reused for the whole triplet (or pair).
 - **Single-lane mode** (`--allow-single` with one dead lane): only the surviving lane + the merged
-  verdict publish at the root, numbered consecutively (e.g. `1_opus48_report.*`, `2_merged_verdict.*` if
+  verdict publish at the root, numbered consecutively (e.g. `1_opus5_report.*`, `2_merged_verdict.*` if
   the Codex lane died) — never a gap or a placeholder for the dead lane. The Final Answer still
   publishes normally, with the single-lane disclosure preserved directly under its title.
 - **Merge failure (exit `4`):** the lane answer(s) that survived AND the FAILED-disclosure file still
@@ -278,8 +278,8 @@ publish folder; Round 4 (2026-07-11) added the Final Answer layer on top of it:
 
 ```text
 ~/Parallax_Projects/<SLUG>/
-├── 1_opus48_report.md
-├── 1_opus48_report.html
+├── 1_opus5_report.md
+├── 1_opus5_report.html
 ├── 2_gpt56sol_report.md
 ├── 2_gpt56sol_report.html
 ├── 3_merged_verdict.md
@@ -312,7 +312,7 @@ publish folder; Round 4 (2026-07-11) added the Final Answer layer on top of it:
 
 ### Two Independent Numbering Sequences
 
-The root triplet (`1_opus48_report` / `2_gpt56sol_report` / `3_merged_verdict`, or `4_`/`5_`/`6_` on a
+The root triplet (`1_opus5_report` / `2_gpt56sol_report` / `3_merged_verdict`, or `4_`/`5_`/`6_` on a
 re-run, ...) and `final/`'s own sequence (`1_<SLUG>_final_answer`, `2_`, `3_`, ...) are scanned and
 numbered **completely separately** — `next_base_index()` runs once against the stock-folder root and
 once against `final/`, each scoped to its own directory. A stock's second research run might publish
@@ -368,7 +368,7 @@ numbers (see "Two Independent Numbering Sequences" above):
 ANSWER LINKS
 1. Final Answer (read this): /home/.../<SLUG>/final/<n>_<SLUG>_final_answer.html
 2. Merged Verdict (full verification): /home/.../<SLUG>/3_merged_verdict.html
-3. Opus 4.8 Report: /home/.../<SLUG>/1_opus48_report.html
+3. Opus 5 Report: /home/.../<SLUG>/1_opus5_report.html
 4. GPT-5.6 Sol Report: /home/.../<SLUG>/2_gpt56sol_report.html
 
 Open in Windows: \\wsl.localhost\<distro>\home\bhavneesh\Parallax_Projects\<SLUG>
@@ -416,11 +416,11 @@ currently warrants. Re-evaluate if real-world usage actually hits one of these:
    same stock folder carry the same race.
 2. **No atomic publish.** Each numbered answer is written with a plain `Path.write_text()`, one file at a
    time, not a temp-file-plus-rename. A process killed mid-`publish_answers()` (e.g. `kill -9` from
-   outside, OOM) can leave a partial numbered set at the stock-folder root — e.g. `4_opus48_report.*` and
+   outside, OOM) can leave a partial numbered set at the stock-folder root — e.g. `4_opus5_report.*` and
    `5_gpt56sol_report.*` present but `6_merged_verdict.*` missing. `manifest.json`'s `"published"` array
    is only fully accurate once the run completes; a partial set is diagnosable by comparing it against
    the directory listing, but nothing currently does that comparison automatically.
-3. **Published filenames are fixed labels, not model-derived.** `1_opus48_report.md` / `2_gpt56sol_report.md`
+3. **Published filenames are fixed labels, not model-derived.** `1_opus5_report.md` / `2_gpt56sol_report.md`
    are constants tied to the skill's default model identity (see `LANE_FILE_LABELS`), not dynamically
    built from `--claude-model`/`--codex-model`/`PARALLAX_CLAUDE_MODEL`/`PARALLAX_CODEX_MODEL`. Running
    with a materially different model override still publishes under the same filenames — the manifest

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run Parallax: two independent full-tool-suite equity research lanes (Claude Opus 4.8 / GPT-5.6 Sol
+"""Run Parallax: two independent full-tool-suite equity research lanes (Claude Opus 5 / GPT-5.6 Sol
 via Codex) plus a tool-grounded GPT-5.6 Sol merger that diffs, re-verifies, and adjudicates both
 reports. FinTwit / X sentiment is OFF by default (Tier-4); pass --fintwit to pull it once and inject it
 into both lanes and the merge prompt. Stdlib-only; no third-party imports.
@@ -77,7 +77,7 @@ DEFAULT_MERGE_TIMEOUT = _env_int("PARALLAX_MERGE_TIMEOUT", 1200)
 DEFAULT_MIN_BYTES = _env_int("PARALLAX_MIN_BYTES", 2500)
 MERGE_MIN_BYTES = 900  # brief-specified, not CLI-overridable
 
-DEFAULT_CLAUDE_MODEL = os.environ.get("PARALLAX_CLAUDE_MODEL", "claude-opus-4-8")
+DEFAULT_CLAUDE_MODEL = os.environ.get("PARALLAX_CLAUDE_MODEL", "claude-opus-5")
 DEFAULT_CLAUDE_EFFORT = os.environ.get("PARALLAX_CLAUDE_EFFORT", "high")
 DEFAULT_CODEX_MODEL = os.environ.get("PARALLAX_CODEX_MODEL", "gpt-5.6-sol")
 DEFAULT_CODEX_EFFORT = os.environ.get("PARALLAX_CODEX_EFFORT", "high")
@@ -88,10 +88,10 @@ DEFAULT_CLAUDE_PERMISSION_MODE = "bypassPermissions"
 FAIL_STUB_TEXT = "[DRY-RUN SIMULATED FAILURE] no output\n"
 
 # --- DELTA 1: publish layout (numbered reader-facing answers at the stock-folder root) ------------
-LANE_FILE_LABELS = {"claude": "opus48_report", "codex": "gpt56sol_report"}
+LANE_FILE_LABELS = {"claude": "opus5_report", "codex": "gpt56sol_report"}
 MERGE_FILE_LABEL = "merged_verdict"
 ANSWER_DISPLAY_NAMES = {
-    "opus48_report": "Opus 4.8 Report",
+    "opus5_report": "Opus 5 Report",
     "gpt56sol_report": "GPT-5.6 Sol Report",
     "merged_verdict": "Merged Verdict",
 }
@@ -228,7 +228,7 @@ def create_run_dir(stock_dir: Path) -> Path:
 def next_base_index(directory: Path) -> int:
     """Scan `directory` for existing published `^(\\d+)_` filenames and return max+1, so a second run
     continues numbering (4_/5_/6_) instead of colliding with 1_/2_/3_. Generic: used against the stock
-    folder ROOT for the opus48/gpt56sol/merged_verdict triplet (must be called ONCE per run, before that
+    folder ROOT for the opus5/gpt56sol/merged_verdict triplet (must be called ONCE per run, before that
     run publishes anything, and the returned index reused for the whole triplet/pair — never recomputed
     mid-run), and reused as-is (Round 4) against `<stock_dir>/final/` for the Final Answer's own
     independent numbering sequence — the two directories are scanned and numbered completely separately."""
@@ -851,7 +851,7 @@ def run_lanes_with_retry(
             argv = None if args.dry_run else build_claude_argv(args.claude_model, args.claude_effort, DEFAULT_CLAUDE_PERMISSION_MODE, ws_claude)
             return run_component(
                 argv, prompt, timeout=timeout, env=env, codex_json=False, dry_run=args.dry_run,
-                fail_key="claude", stub_fn=lambda: build_stub_lane_report("claude", "Claude Opus 4.8", args.subject, run_id),
+                fail_key="claude", stub_fn=lambda: build_stub_lane_report("claude", "Claude Opus 5", args.subject, run_id),
             )
         argv = None if args.dry_run else build_codex_argv(args.codex_model, args.codex_effort, ws_codex)
         return run_component(
@@ -1369,7 +1369,7 @@ def main(argv: list[str] | None = None) -> int:
 
     # --- lane prompts ---
     lane_brief_text = (skill_dir() / "references" / "lane_brief.md").read_text(encoding="utf-8")
-    claude_prompt = build_lane_prompt("Claude Opus 4.8", lane_brief_text, query_text, fintwit_text, run_id)
+    claude_prompt = build_lane_prompt("Claude Opus 5", lane_brief_text, query_text, fintwit_text, run_id)
     codex_prompt = build_lane_prompt("GPT-5.6 Sol", lane_brief_text, query_text, fintwit_text, run_id)
     write_text(run_dir / "prompts" / "lane_claude_prompt.md", claude_prompt)
     write_text(run_dir / "prompts" / "lane_codex_prompt.md", codex_prompt)

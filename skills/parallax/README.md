@@ -1,6 +1,6 @@
 # Parallax
 
-Depth from disagreement: two independent, full-tool-suite equity research passes — Claude Opus 4.8/high
+Depth from disagreement: two independent, full-tool-suite equity research passes — Claude Opus 5/high
 and GPT-5.6 Sol/high via Codex — on the same stock, plus a GPT-5.6 Sol/high merger that runs WITH live
 tools to diff the two reports, verify every disagreement against primary sources, and spot-check
 load-bearing shared-source figures against the filings (agreements it does not re-verify are recorded
@@ -8,7 +8,7 @@ CONCORDANT — consistency, not confirmation). FinTwit / X sentiment is **OFF by
 in with `--fintwit`, only when the user explicitly asks for it. This is Tier 1 of a two-tier pipeline;
 Tier 2 (model-fusion / hybrid-model-fusion / valuation) is a separate, heavier, explicit-only escalation.
 
-- **Lanes:** Claude Opus 4.8/high and GPT-5.6 Sol/high (Codex), both with full tool suites (FMP
+- **Lanes:** Claude Opus 5/high and GPT-5.6 Sol/high (Codex), both with full tool suites (FMP
   `/stable/`, SEC filings, web search, Scite/BioMCP), run in parallel, independently, with no visibility
   into each other's work.
 - **Merger:** GPT-5.6 Sol/high via Codex, **tools enabled** (not a tool-free judge) — verifies rather
@@ -22,7 +22,7 @@ Tier 2 (model-fusion / hybrid-model-fusion / valuation) is a separate, heavier, 
 - **Resilience:** one parallel retry for a failed lane or a failed merge; `--allow-single` degrades to
   single-lane adversarial verification instead of failing outright; merge failure is disclosed, never
   silently salvaged.
-- **Publish layout:** the numbered audit trail (`1_opus48_report.{md,html}`, `2_gpt56sol_report.{md,html}`,
+- **Publish layout:** the numbered audit trail (`1_opus5_report.{md,html}`, `2_gpt56sol_report.{md,html}`,
   `3_merged_verdict.{md,html}`) publishes at `~/Parallax_Projects/<SLUG>/`; re-runs on the same stock
   continue numbering (`4_`/`5_`/`6_`) instead of colliding. Machine artifacts live under
   `<SLUG>/runs/<UTC ts>/`.
