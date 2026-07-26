@@ -1,0 +1,6 @@
+interface:
+  display_name: "Parallax"
+  short_description: "Run two independent Gauntlet Fast reports"
+  default_prompt: "Use $parallax to run independent Claude and Codex Gauntlet Fast research packages in parallel."
+policy:
+  allow_implicit_invocation: false

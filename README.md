@@ -4,9 +4,11 @@ Three installable Claude Code + Codex CLI research workflows that trade speed fo
 
 1. **Parallax Lite** — rapid dual-model comparison with strict time, search, and output budgets.
 2. **Parallax Verified Lite** — bounded dual-model research plus targeted primary-source adjudication.
-3. **Parallax Full** — exhaustive two-lane research and a tool-grounded disagreement-verification merger.
+3. **Parallax Full** — two complete Gauntlet Fast research programs, one in Claude and one in Codex,
+   saved separately for human comparison with no merged verdict.
 
-All three run Claude and Codex independently, hide model identity from the merger, retain the underlying lane reports, and publish a reader-facing HTML answer plus an audit trail.
+Lite and Verified Lite use blind judges. Full deliberately does not: it preserves two complete,
+independent research packages and leaves comparison to the user.
 
 ## Choose the right version
 
@@ -14,7 +16,7 @@ All three run Claude and Codex independently, hide model identity from the merge
 | --- | --- | ---: | --- | --- |
 | Parallax Lite | Orientation, drafting, quick comparisons, narrow factual questions | 2-4 min quick; 3-6 min standard; 5-8 min complex | Judge checks only 2-4 conclusion-flipping disagreements | No retries; checkpoints and persistent sessions; automatic disclosed partial merge |
 | Parallax Verified Lite | Investment screens, earnings/catalyst reviews, regulatory or technical questions needing primary sources | 4-8 min quick; 6-12 min standard; 8-16 min complex | 4-8 targeted primary-source checks, including load-bearing shared-source traps | No retries; checkpoints and persistent sessions; automatic disclosed partial merge |
-| Parallax Full | Broad, contested, high-stakes diligence where coverage matters more than latency | Usually 8-15 min; 15-35+ min under slow tools, timeout, or retry paths | Full disagreement set plus load-bearing primary-filing spot checks | One automatic retry; dual-lane required unless `--allow-single` is passed |
+| Parallax Full | Reading two independent institutional research packages side by side | About 1-2 hours, not yet benchmarked on the new topology | Two separate UltraDeep/Gauntlet Fast evidence, model, and report gates | One branch may survive as an explicitly partial run; no synthesis |
 
 These times are directional, not service-level guarantees. Provider load, slow MCP connectors, long filings, and the complexity of the request can dominate. A genuinely multi-year biotechnology diligence request is not a 1-2 minute task if primary-source verification is required.
 
@@ -23,22 +25,19 @@ These times are directional, not service-level guarantees. Provider load, slow M
 ```text
                          original request
                                 |
-                    complexity/profile selection
-                                |
-                  +-------------+-------------+
-                  |                           |
-          Claude independent lane     Codex independent lane
-                  |                           |
-                  +-------------+-------------+
-                                |
-                      blind Report A / B map
-                                |
-                    Codex synthesizer / judge
-                                |
-               merged answer + lane audit artifacts
+          +---------------------+----------------------+
+          |                                            |
+ Claude Gauntlet Fast program              Codex Gauntlet Fast program
+ Opus 5 high lead                          GPT-5.6 Sol high lead
+ four Sonnet 5 xhigh workers               four GPT-5.6 Sol high workers
+ Claude Search-as-Code                     Codex Search-as-Code
+ complete research package                 complete research package
+          |                                            |
+          +---------------- no merge -------------------+
 ```
 
-The models never see each other's work during the lane phase. The judge sees neutral Report A and Report B labels in a randomized order. Agreement is treated as concordance, not proof.
+Full's programs never see each other's work. Lite and Verified Lite retain their existing blind-judge
+architectures.
 
 ## Installation
 
@@ -55,20 +54,22 @@ Clone and install all three skills:
 ```bash
 git clone https://github.com/bs3537/parallax-skills.git
 cd parallax-skills
-./install.sh
+./install.sh --surface both
 ```
 
-The installer writes to `${CODEX_HOME:-$HOME/.codex}/skills`. It refuses to overwrite an existing skill unless `--force` is passed.
+The installer writes to both `~/.claude/skills` and `${CODEX_HOME:-$HOME/.codex}/skills`. It
+preflights both destinations and refuses to overwrite an existing skill unless `--force` is passed.
 
 Update an existing installation safely:
 
 ```bash
 cd parallax-skills
 git pull --ff-only
-./install.sh --force
+./install.sh --surface both --force
 ```
 
-When `--force` is used, existing copies are moved to a timestamped backup under `${CODEX_HOME:-$HOME/.codex}/skill-backups/` before replacement.
+When `--force` is used, existing copies are moved to timestamped backups under the corresponding
+Claude and Codex runtime homes before replacement.
 
 Install into another skills directory:
 
@@ -79,7 +80,7 @@ Install into another skills directory:
 Preview without changing anything:
 
 ```bash
-./install.sh --dry-run
+./install.sh --surface both --dry-run
 ```
 
 Validate the repository and all deterministic failure paths:
@@ -88,7 +89,7 @@ Validate the repository and all deterministic failure paths:
 ./scripts/test_all.sh
 ```
 
-Restart Codex after installation so the new skill metadata is reloaded.
+Restart Claude Code and Codex after installation so the new skill metadata is reloaded.
 
 ## 1. Parallax Lite
 
@@ -221,73 +222,74 @@ The wrapper depends on the neighboring `parallax-lite` skill for the shared stre
 
 ## 3. Parallax Full
 
-Invoke explicitly with `$parallax` or “use Parallax.” Full is the exhaustive tier and is intentionally slower.
+Invoke explicitly with `$parallax`, “use Parallax,” “use Parallex,” or “run parallel Gauntlet Fast.”
+Full is the exhaustive comparison tier and is intentionally slower.
 
 ### What it does
 
-Full runs two independent senior-research lanes with broad tool access:
+Full runs two complete independent research programs:
 
-- Claude Opus 5 at high effort.
-- GPT-5.6 Sol at high effort.
-- GPT-5.6 Sol merger at high effort with live tools.
-- Optional FinTwit/X sentiment sidecar only when `--fintwit` is requested.
-- Full disagreement-set verification plus load-bearing primary-filing spot checks.
-- Deterministic stripping of audit scaffolding into a clean reader-facing Final Answer.
+- Claude: Opus 5 high lead over exactly four Sonnet 5 xhigh workers.
+- Codex: GPT-5.6 Sol high lead over exactly four GPT-5.6 Sol high workers.
+- Separate native-web-first research, Search-as-Code runs, Perplexity gap searches, evidence ledgers,
+  executable models, detailed Excel workbooks, audits, Markdown reports, and HTML reports.
+- Optional independent FinTwit/X sentiment passes only when `--fintwit` is requested.
+- No merger, adjudication, combined target, preferred model, claim matrix, or Final Answer.
 
 ### Flow
 
 ```text
 request
-  -> optional FinTwit sidecar
-  -> two full research lanes in parallel
-       -> universal business, financial, catalyst, bear-case, and valuation coverage
-       -> one automatic retry if a lane fails validation
-  -> blind merger with live tools
-       -> verify all material disagreements
-       -> spot-check decision-critical shared-source figures
-  -> full merged verdict
-  -> deterministic Final Answer stripper
-  -> numbered HTML and Markdown audit artifacts
+  -> create one project folder with claude_research/ and codex_research/
+  -> launch both branch controllers concurrently
+       -> each launches exactly four non-overlapping research workers
+       -> each runs its own UltraDeep Search-as-Code plan
+       -> each lead executes Gauntlet Fast Phases 0-6 and 8
+       -> each publishes and audits its own MD / HTML / XLSX package
+  -> print two equally prominent report links
+  -> stop; user compares the reports
 ```
 
 ### Reliability tradeoff
 
-Full currently captures Codex raw events but waits for a terminal lane answer, uses ephemeral Codex sessions, and may retry a failed lane from zero. That is acceptable for the exhaustive tier but is exactly why Lite and Verified Lite use a different checkpointing engine. If predictable latency matters, choose one of the Lite workflows.
+Full executes ten model calls before any retries: four workers and one lead per branch. The two
+five-call programs run concurrently, but total compute is roughly twice a single Gauntlet Fast run.
+If predictable latency matters, choose one of the Lite workflows.
 
 ### Usage
 
 ```bash
 python3 ~/.codex/skills/parallax/scripts/run_parallax.py CCCC \
-  --query-file ~/questions/cccc.md
+  --query-file ~/questions/cccc.md \
+  --project-dir ~/Documents/CCCC_Parallax_20260726
 ```
 
-Permit a disclosed single-lane adversarial result:
+The same runner is installed in Claude:
 
 ```bash
-python3 ~/.codex/skills/parallax/scripts/run_parallax.py CCCC \
-  --query-file ~/questions/cccc.md --allow-single
+python3 ~/.claude/skills/parallax/scripts/run_parallax.py CCCC
 ```
 
 ### When to use it
 
-- A broad investment-research screen with many independent evidence streams.
-- A contested conclusion where disagreements themselves are valuable signals.
-- Work that can tolerate 10-30+ minutes and benefits from a comprehensive audit trail.
+- A decision where the user wants two independent institutional reports rather than a consensus.
+- A broad or contested investment question where vendor/model differences are informative.
+- Work that can tolerate roughly one to two hours and ten model calls.
 
-Full Parallax is still a screen, not a substitute for the separate Damodaran-grounded `valuation` workflow or other domain-specific high-stakes engines.
+Each branch uses the Gauntlet valuation methodology and installed valuation engine where required.
 
 ## Failure handling comparison
 
 | Behavior | Lite | Verified Lite | Full |
 | --- | --- | --- | --- |
-| Stream raw events while running | Yes | Yes | Raw Codex events retained after attempt |
+| Stream raw events while running | Yes | Yes | Codex raw events retained per worker/lead |
 | Continuously update usable checkpoint | Yes | Yes | No |
-| Persistent resumable sessions | Yes | Yes | No; Codex uses ephemeral execution |
-| Automatic retry | Never | Never | One retry per failed lane and merger |
-| One lane fails | Automatic disclosed partial merge | Automatic disclosed adversarial verification | Stops unless `--allow-single` |
-| Both lanes fail | Exit 2, no fabricated merge | Exit 2, no fabricated merge | Exit 2, no publication |
-| Judge fails | Exit 4, lanes preserved | Exit 4, lanes preserved | Exit 4, lanes plus failed-disclosure file published |
-| Hard search/word budget | Yes | Yes | No fixed search or length budget |
+| Persistent resumable sessions | Yes | Yes | No; leaves are ephemeral |
+| Automatic retry | Never | Never | One retry per failed worker; two Search-as-Code attempts |
+| One branch fails | Automatic disclosed partial merge | Automatic disclosed adversarial verification | Exit 4; successful independent package preserved |
+| Both branches fail | Exit 2, no fabricated merge | Exit 2, no fabricated merge | Exit 2; no reports fabricated |
+| Lead/package gate fails | Exit 4, lanes preserved | Exit 4, lanes preserved | Branch fails; the other branch remains independent |
+| Hard search/word budget | Yes | Yes | 24-query Search-as-Code plan; report depth follows Gauntlet |
 
 ## Output locations
 
@@ -306,18 +308,20 @@ Verified Lite:
 Full:
 
 ```text
-~/Parallax_Projects/<SLUG>/
+~/Documents/<PROJECT>_Parallax_<YYYYMMDD>/
+├── claude_research/FINAL_REPORT.html
+└── codex_research/FINAL_REPORT.html
 ```
 
-Every successful run prints an `ANSWER LINKS` block. The first link is the clean reader-facing HTML answer; the remaining links expose the merged audit copy and independent lane reports.
+Every successful Full run prints the two independent report paths and the root manifest. It never
+prints a merged answer.
 
 ## Security and evidence boundaries
 
-- Lane reports and user-supplied content are wrapped as untrusted data before the judge reads them.
+- Full keeps each research branch isolated; neither receives the other branch's paths or artifacts.
 - Social content is Tier 4 sentiment only and never anchors a material claim.
-- Two-model agreement is not independent verification.
 - Primary documents outrank aggregators, summaries, and search snippets.
-- A partial or degraded answer is disclosed at the top of the published result and in `manifest.json`.
+- A partial Full run is disclosed in `RUN_MANIFEST.json` and the command exit status.
 - No workflow recursively invokes another fusion workflow.
 
 ## Repository layout
@@ -335,12 +339,16 @@ parallax-skills/
 
 ## Uninstall
 
-Remove the three installed skill folders, then restart Codex:
+Remove the three installed skill folders from each surface, then restart both CLIs:
 
 ```bash
+rm -rf "$HOME/.claude/skills/parallax-lite" \
+       "$HOME/.claude/skills/parallax-verified-lite" \
+       "$HOME/.claude/skills/parallax"
 rm -rf "${CODEX_HOME:-$HOME/.codex}/skills/parallax-lite" \
        "${CODEX_HOME:-$HOME/.codex}/skills/parallax-verified-lite" \
        "${CODEX_HOME:-$HOME/.codex}/skills/parallax"
 ```
 
-If installed with `--force`, timestamped backups remain under `${CODEX_HOME:-$HOME/.codex}/skill-backups/` until removed manually.
+If installed with `--force`, timestamped backups remain under the corresponding runtime homes until
+removed manually.
