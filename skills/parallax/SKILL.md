@@ -25,7 +25,7 @@ authorize execution.
 ```text
 Claude branch                             Codex branch
 Opus 5 high lead                         GPT-5.6 Sol high lead
-  └─ four Sonnet 5 xhigh workers           └─ four GPT-5.6 Sol high workers
+  └─ four Sonnet 5 medium workers          └─ four GPT-5.6 Sol high workers
   └─ Claude Search-as-Code                  └─ Codex Search-as-Code
   └─ Claude tools and evidence              └─ Codex tools and evidence
   └─ FINAL_REPORT.md/.html/.xlsx            └─ FINAL_REPORT.md/.html/.xlsx
@@ -179,7 +179,7 @@ and the user should compare the reports independently. Do not summarize one as b
 | Role | Model | Effort |
 | --- | --- | --- |
 | Claude lead | `claude-opus-5` | `high` |
-| Four Claude workers | `claude-sonnet-5` | `xhigh` |
+| Four Claude workers | `claude-sonnet-5` | `medium` |
 | Codex lead | `gpt-5.6-sol` | `high` |
 | Four Codex workers | `gpt-5.6-sol` | `high` |
 

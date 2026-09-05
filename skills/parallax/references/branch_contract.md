@@ -12,8 +12,12 @@ Each branch has five model calls:
 
 | Branch | Four workers | Lead |
 | --- | --- | --- |
-| Claude | `claude-sonnet-5`, `xhigh` | `claude-opus-5`, `high` |
+| Claude | `claude-sonnet-5`, `medium` | `claude-opus-5`, `high` |
 | Codex | `gpt-5.6-sol`, `high` | `gpt-5.6-sol`, `high` |
+
+Workers are evidence-collection lanes only. Each branch lead is that branch's selected main model
+and exclusively owns competitive scoring, PoS, forecasts, DCF/rNPV/SOTP, other calculations,
+quantitative verification, interpretation, and recommendations after reviewing all lane evidence.
 
 The two branch controllers run concurrently. Each set of four workers runs concurrently. A worker or
 lead is a leaf and never spawns another agent.

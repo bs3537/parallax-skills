@@ -3,7 +3,7 @@
 
 Full Parallax is intentionally a comparison workflow, not a synthesis workflow:
 
-* Claude branch: four Sonnet 5 xhigh workers -> one Opus 5 high lead.
+* Claude branch: four Sonnet 5 medium workers -> one Opus 5 high lead.
 * Codex branch: four GPT-5.6 Sol high workers -> one GPT-5.6 Sol high lead.
 * Each branch runs its own Search-as-Code pass and writes a complete research package.
 * Neither branch may read the other branch's files.
@@ -34,7 +34,7 @@ import zipfile
 CLAUDE_LEAD_MODEL = "claude-opus-5"
 CLAUDE_LEAD_EFFORT = "high"
 CLAUDE_WORKER_MODEL = "claude-sonnet-5"
-CLAUDE_WORKER_EFFORT = "xhigh"
+CLAUDE_WORKER_EFFORT = "medium"
 CODEX_LEAD_MODEL = "gpt-5.6-sol"
 CODEX_LEAD_EFFORT = "high"
 CODEX_WORKER_MODEL = "gpt-5.6-sol"
@@ -477,7 +477,9 @@ Execution contract:
   targeted Perplexity gap searches afterward.
 - Preserve source identity, issuer/author, date, exact locator, and a short direct excerpt or observed
   output for every material item.
-- Execute nontrivial arithmetic with Python or the appropriate domain tool.
+- Preserve sourced quantitative inputs exactly, including units, periods, and transformations, but
+  do not score, forecast, value, calculate, recompute, verify, interpret, or recommend. The branch
+  lead performs all quantitative work after reviewing the worker evidence.
 - After two materially different failed verification attempts, mark [UNKNOWN - NOT VERIFIED].
 - Treat search snippets and connector summaries as discovery only.
 - Do not state a final rating or price target outside this lane.
@@ -490,7 +492,7 @@ Final response format:
 1. Lane scope and searched query families.
 2. Verified evidence table with atomic claim, classification, source, date, exact locator, excerpt,
    source tier, status, and consequence if wrong.
-3. Calculations and preserved outputs.
+3. Quantitative inputs and preserved source outputs; no worker calculations.
 4. Contrary evidence and source conflicts.
 5. Unknowns after the two-attempt rule.
 6. Handoff notes limited to this lane.
