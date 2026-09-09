@@ -39,6 +39,7 @@ Times are directional. Provider and primary-document latency can extend them.
 - Have the judge resolve every conclusion-flipping disagreement within its verification budget.
 - Spot-check load-bearing concordant claims when both lanes rely on the same source.
 - Mark unresolved conflicts explicitly; never average two conflicting values.
+- Primary-source anchors for SEC filings come from the `edgar-intel` MCP when exposed (accession + item + char offsets + sec.gov URL via `search_filings`/`get_section`; cover shares via `get_cover_page_facts`); the judge re-slices disputed quotes with `get_chunk`/`get_section` instead of re-fetching sec.gov. Run `prefetch` only if the ticker is not in `index_status` and the budget allows.
 - In single-lane mode, verify the surviving report adversarially and publish a conspicuous partial-result disclosure.
 
 ## Reliability Contract

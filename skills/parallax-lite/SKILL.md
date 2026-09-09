@@ -45,6 +45,7 @@ Times are directional, not guarantees. Tool latency and provider load can domina
 - Enforce search and word budgets. A budget breach stops that component and salvages its latest checkpoint when usable.
 - Proceed with one surviving lane automatically, but prepend an explicit partial-single-lane disclosure.
 - Ask the judge to verify only disagreements capable of reversing the conclusion. Agreement is not proof.
+- Filings within budget: if the `edgar-intel` MCP is exposed, lanes may call `search_filings`/`get_section` on an already-ingested ticker (`index_status`) for locator-anchored quotes; they must not run `prefetch` (minutes) inside the 2–4 minute budget.
 
 ## Quality Gate
 
