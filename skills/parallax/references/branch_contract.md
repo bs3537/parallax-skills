@@ -12,8 +12,8 @@ Each branch has five model calls:
 
 | Branch | Four workers | Lead |
 | --- | --- | --- |
-| Claude | `claude-sonnet-5`, `medium` | `claude-opus-5`, `high` |
-| Codex | `gpt-5.6-sol`, `high` | `gpt-5.6-sol`, `high` |
+| Claude | `claude-sonnet-5`, `high` | `claude-opus-5`, `high` |
+| Codex | `gpt-6-luna`, `high` | `gpt-5.6-sol`, `high` |
 
 Workers are evidence-collection lanes only. Each branch lead is that branch's selected main model
 and exclusively owns competitive scoring, PoS, forecasts, DCF/rNPV/SOTP, other calculations,
