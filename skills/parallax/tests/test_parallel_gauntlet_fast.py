@@ -33,8 +33,8 @@ class ParallelGauntletFastContractTests(unittest.TestCase):
     def test_model_and_effort_contract(self):
         self.assertEqual(self.runner.CLAUDE_LEAD_MODEL, "claude-opus-5")
         self.assertEqual(self.runner.CLAUDE_LEAD_EFFORT, "high")
-        self.assertEqual(self.runner.CLAUDE_WORKER_MODEL, "claude-sonnet-5")
-        self.assertEqual(self.runner.CLAUDE_WORKER_EFFORT, "high")
+        self.assertEqual(self.runner.CLAUDE_WORKER_MODEL, "claude-sonnet-5-5")
+        self.assertEqual(self.runner.CLAUDE_WORKER_EFFORT, "medium")
         self.assertEqual(self.runner.CODEX_LEAD_MODEL, "gpt-5.6-sol")
         self.assertEqual(self.runner.CODEX_LEAD_EFFORT, "high")
         self.assertEqual(self.runner.CODEX_WORKER_MODEL, "gpt-6-luna")
@@ -69,7 +69,7 @@ class ParallelGauntletFastContractTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(
             json.loads(result.stdout),
-            ["claude-opus-5", "high", "gpt-5.6-sol", "high"],
+            ["claude-opus-5", "medium", "gpt-5.6-sol", "high"],
         )
 
     def test_cli_argv_preserves_each_runtime_tool_configuration(self):
@@ -80,8 +80,8 @@ class ParallelGauntletFastContractTests(unittest.TestCase):
             cwd,
         )
         self.assertEqual(claude[:2], ["claude", "-p"])
-        self.assertIn("claude-sonnet-5", claude)
-        self.assertIn("high", claude)
+        self.assertIn("claude-sonnet-5-5", claude)
+        self.assertIn("medium", claude)
         self.assertNotIn("--strict-mcp-config", claude)
 
         codex = self.runner.build_codex_argv(

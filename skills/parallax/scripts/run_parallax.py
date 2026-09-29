@@ -3,7 +3,7 @@
 
 Full Parallax is intentionally a comparison workflow, not a synthesis workflow:
 
-* Claude branch: four Sonnet 5 high workers -> one Opus 5 high lead.
+* Claude branch: four Sonnet 5.5 medium workers -> one Opus 5 high lead.
 * Codex branch: four GPT-6 Luna high workers -> one GPT-5.6 Sol high lead.
 * Each branch runs its own Search-as-Code pass and writes a complete research package.
 * Neither branch may read the other branch's files.
@@ -33,8 +33,8 @@ import zipfile
 
 CLAUDE_LEAD_MODEL = "claude-opus-5"
 CLAUDE_LEAD_EFFORT = "high"
-CLAUDE_WORKER_MODEL = "claude-sonnet-5"
-CLAUDE_WORKER_EFFORT = "high"
+CLAUDE_WORKER_MODEL = "claude-sonnet-5-5"
+CLAUDE_WORKER_EFFORT = "medium"
 CODEX_LEAD_MODEL = "gpt-5.6-sol"
 CODEX_LEAD_EFFORT = "high"
 CODEX_WORKER_MODEL = "gpt-6-luna"
