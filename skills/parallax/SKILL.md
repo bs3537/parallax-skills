@@ -14,6 +14,18 @@ description: >-
 Run two independent Gauntlet Fast research programs concurrently and give the user both reports to
 compare. Never merge, rank, average, reconcile, adjudicate, or select between them.
 
+## Agents, models, review and web search: follow the saved custom instructions
+
+This skill does not choose models or effort levels for its roles. Take them from the user's saved custom instructions for the host you are running in: Claude Code `~/.claude/CLAUDE.md` (with its imported memory files) · agy/Gemini `~/.gemini/GEMINI.md` · Codex CLI `~/.codex/AGENTS.md` · Grok CLI `~/.grok/AGENTS.md` · Kimi Code `~/.kimi-code/AGENTS.md` · claude.ai / Desktop: the profile custom instructions. Read the relevant parts before the first spawn or search:
+- **Subagents / data collectors / workers / lanes:** model and effort, which tool and connector calls must go through them, and the text their briefs must carry (e.g. the search-fallback paragraph).
+- **Orchestrator (main model):** which model does the quantitative work, synthesis and rating this skill assigns to "the main model" or "the lead".
+- **Reviewer / judge / verifier:** whether this output needs an independent review, with which model and effort, and what the reviewer is given.
+- **Web search:** providers, their order, the fallback chain, and which native search tools not to use.
+
+Where this skill, its references or its scripts name a model (e.g. a `claude-sonnet-*` default in a script or config), that value only mirrors the current custom instructions; the saved custom instructions win on any conflict. If they are silent on a point, use the host default and say so in the output's methodology note.
+
+Parallax keeps its cross-model design: one independent Claude branch and one independent Codex branch. That family split is the skill's identity. The specific model and effort for each role (Claude lead, Claude workers, Codex lead, Codex workers) come from each host's saved custom instructions (Claude: `~/.claude/CLAUDE.md`; Codex: `~/.codex/AGENTS.md`), not from this skill. The model IDs in `scripts/run_parallax.py` and the table at the end of this file mirror those instructions and are updated when they change.
+
 ## Invocation gate
 
 Run only when the active user request affirmatively names `Parallax`, `Parallex`, or explicitly asks
@@ -24,8 +36,8 @@ authorize execution.
 
 ```text
 Claude branch                             Codex branch
-Opus 5 high lead                         GPT-5.6 Sol high lead
-  └─ four Sonnet 5.5 high workers          └─ four GPT-6.1 Sol high workers
+Lead (per custom instructions)            Lead (per custom instructions)
+  └─ four workers (per custom instr.)       └─ four workers (per custom instr.)
   └─ Claude Search-as-Code                  └─ Codex Search-as-Code
   └─ Claude tools and evidence              └─ Codex tools and evidence
   └─ FINAL_REPORT.md/.html/.xlsx            └─ FINAL_REPORT.md/.html/.xlsx
@@ -175,16 +187,21 @@ Give two equally prominent links in this order:
 Also link both workbooks and the root `RUN_MANIFEST.json`. State that no merged verdict was produced
 and the user should compare the reports independently. Do not summarize one as better.
 
-## Fixed model contract
+## Model contract
 
-| Role | Model | Effort |
-| --- | --- | --- |
-| Claude lead | `claude-opus-5` | `high` |
-| Four Claude workers | `claude-sonnet-5-5` | `high` |
-| Codex lead | `gpt-5.6-sol` | `high` |
-| Four Codex workers | `gpt-6.1-sol` | `high` |
+The "current default" values below mirror the saved custom instructions and the constants in
+`scripts/run_parallax.py`; update both when the custom instructions change. The custom instructions win on any
+conflict.
 
-The runner does not accept environment overrides for these values. A missing or rejected model fails
+| Role | Current default model | Effort | Governed by |
+| --- | --- | --- | --- |
+| Claude lead | `claude-opus-5` | `high` | Claude custom instructions (`~/.claude/CLAUDE.md`) |
+| Four Claude workers | `claude-sonnet-5-5` | `high` | Claude custom instructions (`~/.claude/CLAUDE.md`) |
+| Codex lead | `gpt-5.6-sol` | `high` | Codex custom instructions (`~/.codex/AGENTS.md`) |
+| Four Codex workers | `gpt-6.1-sol` | `high` | Codex custom instructions (`~/.codex/AGENTS.md`) |
+
+The runner does not accept environment overrides for these values: to change a role's model, update the custom
+instructions, then the constants in `scripts/run_parallax.py` and this table. A missing or rejected model fails
 that branch and is disclosed; it never silently substitutes another model.
 
 `PARALLAX_GAUNTLET_PROMPT` may override only the read-only Gauntlet master-prompt path.

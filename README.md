@@ -10,6 +10,11 @@ Three installable Claude Code + Codex CLI research workflows that trade speed fo
 Lite and Verified Lite use blind judges. Full deliberately does not: it preserves two complete,
 independent research packages and leaves comparison to the user.
 
+**Models and effort.** The Claude-vs-Codex family split is part of each workflow's design, but the specific
+model and effort for each role (leads, workers, lanes, judges) come from each host's saved custom instructions
+(Claude: `~/.claude/CLAUDE.md`; Codex: `~/.codex/AGENTS.md`). Model IDs in the scripts mirror the current custom
+instructions and are updated when those change. See "Agents, models, review and web search" in each `SKILL.md`.
+
 ## Choose the right version
 
 | Workflow | Best for | Normal wall time | Verification depth | Failure behavior |
@@ -28,8 +33,8 @@ These times are directional, not service-level guarantees. Provider load, slow M
           +---------------------+----------------------+
           |                                            |
  Claude Gauntlet Fast program              Codex Gauntlet Fast program
- Opus 5 high lead                          GPT-5.6 Sol high lead
- four Sonnet 5 xhigh workers               four GPT-5.6 Sol high workers
+ Lead (per custom instructions)            Lead (per custom instructions)
+ four workers (per custom instr.)         four workers (per custom instr.)
  Claude Search-as-Code                     Codex Search-as-Code
  complete research package                 complete research package
           |                                            |
@@ -229,8 +234,8 @@ Full is the exhaustive comparison tier and is intentionally slower.
 
 Full runs two complete independent research programs:
 
-- Claude: Opus 5 high lead over exactly four Sonnet 5 xhigh workers.
-- Codex: GPT-5.6 Sol high lead over exactly four GPT-5.6 Sol high workers.
+- Claude: one lead over exactly four workers (model and effort per the Claude custom instructions).
+- Codex: one lead over exactly four workers (model and effort per the Codex custom instructions).
 - Separate native-web-first research, Search-as-Code runs, Perplexity gap searches, evidence ledgers,
   executable models, detailed Excel workbooks, audits, Markdown reports, and HTML reports.
 - Optional independent FinTwit/X sentiment passes only when `--fintwit` is requested.

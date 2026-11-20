@@ -7,6 +7,18 @@ description: Explicit-invocation-only bounded two-model research with persistent
 
 Run a middle-tier workflow between rapid comparison and exhaustive diligence. Reuse Parallax Lite's tested streaming engine while applying stricter source, verification, and time budgets.
 
+## Agents, models, review and web search: follow the saved custom instructions
+
+This skill does not choose models or effort levels for its roles. Take them from the user's saved custom instructions for the host you are running in: Claude Code `~/.claude/CLAUDE.md` (with its imported memory files) · agy/Gemini `~/.gemini/GEMINI.md` · Codex CLI `~/.codex/AGENTS.md` · Grok CLI `~/.grok/AGENTS.md` · Kimi Code `~/.kimi-code/AGENTS.md` · claude.ai / Desktop: the profile custom instructions. Read the relevant parts before the first spawn or search:
+- **Subagents / data collectors / workers / lanes:** model and effort, which tool and connector calls must go through them, and the text their briefs must carry (e.g. the search-fallback paragraph).
+- **Orchestrator (main model):** which model does the quantitative work, synthesis and rating this skill assigns to "the main model" or "the lead".
+- **Reviewer / judge / verifier:** whether this output needs an independent review, with which model and effort, and what the reviewer is given.
+- **Web search:** providers, their order, the fallback chain, and which native search tools not to use.
+
+Where this skill, its references or its scripts name a model (e.g. a `claude-sonnet-*` default in a script or config), that value only mirrors the current custom instructions; the saved custom instructions win on any conflict. If they are silent on a point, use the host default and say so in the output's methodology note.
+
+The cross-vendor design (one independent Claude lane and one independent Codex lane) is this skill's identity and stays, but the model version and effort of each lane, the merge judge and any collectors follow the host's saved custom instructions (Claude: `~/.claude/CLAUDE.md`; Codex: `~/.codex/AGENTS.md`); the names and ids in `scripts/run_parallax_verified_lite.py` (which reuses the `parallax-lite` engine and its defaults) and in tables are current defaults mirroring them.
+
 ## Dependency
 
 Install `parallax-lite` beside this skill. The packaged `parallax-skills` installer installs both. The wrapper refuses to run if the shared engine is absent.

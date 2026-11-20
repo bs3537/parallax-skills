@@ -8,6 +8,9 @@ Full Parallax is intentionally a comparison workflow, not a synthesis workflow:
 * Each branch runs its own Search-as-Code pass and writes a complete research package.
 * Neither branch may read the other branch's files.
 * No merger, adjudicator, combined verdict, claim matrix, or final answer is produced.
+
+The model names in this docstring and the *_MODEL / *_EFFORT constants below mirror the current saved custom
+instructions (~/.claude/CLAUDE.md, ~/.codex/AGENTS.md); update them here when those instructions change.
 """
 
 from __future__ import annotations
@@ -31,6 +34,8 @@ from typing import Any
 import zipfile
 
 
+# Model IDs/efforts below mirror the current saved custom instructions (~/.claude/CLAUDE.md, ~/.codex/AGENTS.md);
+# update them here when those instructions change.
 CLAUDE_LEAD_MODEL = "claude-opus-5"
 CLAUDE_LEAD_EFFORT = "high"
 CLAUDE_WORKER_MODEL = "claude-sonnet-5-5"

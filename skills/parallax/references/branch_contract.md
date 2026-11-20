@@ -8,9 +8,11 @@ never synthesizes them.
 
 ## Topology
 
-Each branch has five model calls:
+Each branch has five model calls. Each role's model and effort come from the host's saved custom instructions
+(Claude: `~/.claude/CLAUDE.md`; Codex: `~/.codex/AGENTS.md`). The table lists the current defaults, which mirror
+them and the constants in `scripts/run_parallax.py`:
 
-| Branch | Four workers | Lead |
+| Branch | Four workers (current default) | Lead (current default) |
 | --- | --- | --- |
 | Claude | `claude-sonnet-5-5`, `high` | `claude-opus-5`, `high` |
 | Codex | `gpt-6.1-sol`, `high` | `gpt-5.6-sol`, `high` |
